@@ -1,11 +1,16 @@
 import os
 
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
+from werkzeug.utils import secure_filename
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+ALLOWED_UPLOAD_EXTENSIONS = {".pdf", ".png", ".jpg", ".jpeg", ".doc", ".docx"}
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 app = Flask(__name__, template_folder=os.path.join(BASE_DIR, "templates"))
-app.secret_key = "asgo-secret-key"
+app.secret_key = "excusetrack-secret-key"
 
 # ---------------- TEMP DATABASE ----------------
 TEACHER_ACCOUNTS = {
@@ -107,6 +112,9 @@ TEACHER_DIRECTORY = {
 }
 
 HOMEROOM_ADVISERS = {
+    "grade 7 ruby": {"name": "Ma'am Joh", "email": TEACHER_ACCOUNTS["Ma'am Joh"]},
+    "grade 7 diamond": {"name": "Sir Ruel", "email": TEACHER_ACCOUNTS["Sir Ruel"]},
+    "grade 7 emerald": {"name": "Ma'am Bing", "email": TEACHER_ACCOUNTS["Ma'am Bing"]},
     "grade 8 camia": {"name": "Sir Den", "email": TEACHER_ACCOUNTS["Sir Den"]},
     "grade 8 sampa": {"name": "Ma'am Cindy", "email": TEACHER_ACCOUNTS["Ma'am Cindy"]},
     "grade 8 jasmine": {"name": "Ma'am Datch", "email": TEACHER_ACCOUNTS["Ma'am Datch"]}
@@ -144,6 +152,9 @@ def get_grade_section_key(grade_section):
     normalized = normalize_text(grade_section)
 
     if normalized.startswith("grade 7"):
+        for section in ["ruby", "diamond", "emerald"]:
+            if section in normalized:
+                return f"grade 7 {section}"
         return "grade 7"
 
     if normalized.startswith("grade 8"):
@@ -157,6 +168,8 @@ def get_grade_section_key(grade_section):
 def get_teacher_targets(grade_section, subjects):
     section_key = get_grade_section_key(grade_section)
     subject_map = TEACHER_DIRECTORY.get(section_key, [])
+    if not subject_map and section_key and section_key.startswith("grade 7 "):
+        subject_map = TEACHER_DIRECTORY.get("grade 7", [])
     teacher_targets = {}
 
     for subject in subjects:
@@ -179,7 +192,108 @@ def get_teacher_targets(grade_section, subjects):
 
 
 def get_homeroom_adviser(grade_section):
-    return HOMEROOM_ADVISERS.get(get_grade_section_key(grade_section))
+    section_key = get_grade_section_key(grade_section)
+    return HOMEROOM_ADVISERS.get(section_key)
+
+
+def is_allowed_upload(filename):
+    _, extension = os.path.splitext(filename.lower())
+    return extension in ALLOWED_UPLOAD_EXTENSIONS
+
+
+def validate_submission_payload(form, files):
+    student_name = form.get("student_name", "").strip()
+    student_email = form.get("student_email", "").strip()
+    grade_section = form.get("grade_section", "").strip()
+    date_of_absence = form.get("date_of_absence", "").strip()
+
+    if not student_name:
+        return "Student name is required."
+
+    if get_role_from_email(student_email) != "student":
+        return "Please use a valid student email."
+
+    if not grade_section:
+        return "Grade and section are required."
+
+    if not date_of_absence:
+        return "Please choose a date of absence."
+
+    offenses = [
+        "offense_absent" in form,
+        "offense_tardy" in form,
+        "offense_cutting" in form
+    ]
+    if not any(offenses):
+        return "Please select at least one offense: absent, tardy, or cutting."
+
+    if "offense_absent" in form:
+        absent_days = form.get("absent_days", "").strip()
+        if not absent_days:
+            return "Please enter the number of days absent."
+        try:
+            absent_day_count = int(absent_days)
+        except ValueError:
+            return "Days absent must be a valid number."
+        if absent_day_count < 1:
+            return "Days absent must be at least 1."
+
+        absent_dates = [value.strip() for value in form.getlist("absent_dates[]") if value.strip()]
+        if len(absent_dates) != absent_day_count:
+            return "Please enter absent dates that match the number of days absent."
+
+    if "offense_tardy" in form:
+        tardy_minutes = form.get("tardy_minutes", "").strip()
+        if not tardy_minutes:
+            return "Please enter the tardy minutes."
+        try:
+            if int(tardy_minutes) < 1:
+                return "Tardy minutes must be at least 1."
+        except ValueError:
+            return "Tardy minutes must be a valid number."
+
+    if "offense_cutting" in form:
+        cutting_classes = form.get("cutting_classes", "").strip()
+        if not cutting_classes:
+            return "Please enter the number of classes cut."
+        try:
+            if int(cutting_classes) < 1:
+                return "Classes cut must be at least 1."
+        except ValueError:
+            return "Classes cut must be a valid number."
+
+    subjects = [subject.strip() for subject in form.getlist("subjects[]") if subject.strip()]
+    if not subjects:
+        return "Please enter at least one affected subject."
+
+    attachment = files.get("attachment")
+    if attachment is None or not attachment.filename:
+        return "Please upload your excuse letter or medical certificate."
+
+    if not is_allowed_upload(attachment.filename):
+        return "Please upload a PDF, image, or Word document for the attachment."
+
+    return None
+
+
+def validate_slip_action(slip, role, email, action):
+    if action not in {"approve", "reject"}:
+        return "Invalid action."
+
+    if slip is None:
+        return "Unable to update that slip."
+
+    if slip["current_inbox"] in {"completed", "rejected", "pending_homeroom"}:
+        return "This slip can no longer be updated."
+
+    if role == "teacher" and slip["current_inbox"] == "teacher":
+        approval = slip["teacher_approvals"].get(email)
+        if approval is None:
+            return "This slip is not assigned to your teacher account."
+        if approval["status"] != "pending":
+            return "You have already acted on this slip."
+
+    return None
 
 
 def get_account_by_role(role):
@@ -293,6 +407,11 @@ def reject_slip(slip, role, approver_email):
 def home():
     return render_template("login.html")
 
+
+@app.route("/uploads/<path:filename>")
+def uploaded_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
 # ---------------- LOGIN ----------------
 @app.route("/login", methods=["POST"])
 def login():
@@ -350,44 +469,36 @@ def submit_slip():
         flash("Only student accounts can submit an admission slip.")
         return redirect(url_for("dashboard", role="student", email=student_email))
 
+    validation_error = validate_submission_payload(request.form, request.files)
+    if validation_error:
+        flash(validation_error)
+        return redirect(url_for("dashboard", role="student", email=student_email))
+
     offense_absent = "offense_absent" in request.form
     offense_tardy = "offense_tardy" in request.form
     offense_cutting = "offense_cutting" in request.form
-
-    if not any([offense_absent, offense_tardy, offense_cutting]):
-        flash("Please select at least one offense: absent, tardy, or cutting.")
-        return redirect(url_for("dashboard", role="student", email=student_email))
 
     absent_days = request.form["absent_days"].strip() if offense_absent else ""
     tardy_minutes = request.form["tardy_minutes"].strip() if offense_tardy else ""
     cutting_classes = request.form["cutting_classes"].strip() if offense_cutting else ""
 
-    if offense_absent and not absent_days:
-        flash("Please enter the number of days absent.")
-        return redirect(url_for("dashboard", role="student", email=student_email))
+    subjects = request.form.getlist("subjects[]")
+    subjects = [subject.strip() for subject in subjects if subject.strip()]
 
-    if offense_tardy and not tardy_minutes:
-        flash("Please enter the tardy minutes.")
-        return redirect(url_for("dashboard", role="student", email=student_email))
-
-    if offense_cutting and not cutting_classes:
-        flash("Please enter the number of classes cut.")
-        return redirect(url_for("dashboard", role="student", email=student_email))
-
-    subjects = [
-        request.form.get("subject_1", "").strip(),
-        request.form.get("subject_2", "").strip(),
-        request.form.get("subject_3", "").strip()
-    ]
-    subjects = [subject for subject in subjects if subject]
-
-    if not subjects:
-        flash("Please enter at least one affected subject.")
-        return redirect(url_for("dashboard", role="student", email=student_email))
+    absent_dates = []
+    if offense_absent:
+        absent_dates = request.form.getlist("absent_dates[]")
+        absent_dates = [date_value.strip() for date_value in absent_dates if date_value.strip()]
 
     grade_section = request.form["grade_section"].strip()
     teacher_targets = get_teacher_targets(grade_section, subjects)
     homeroom_adviser = get_homeroom_adviser(grade_section)
+    attachment = request.files.get("attachment")
+
+    safe_filename = secure_filename(attachment.filename)
+    stored_filename = f"{len(admission_slips) + 1}_{safe_filename}"
+    attachment.save(os.path.join(UPLOAD_FOLDER, stored_filename))
+
     teacher_approvals = {
         teacher["email"]: {
             "name": teacher["name"],
@@ -405,6 +516,7 @@ def submit_slip():
         "date_of_absence": request.form["date_of_absence"],
         "offense_absent": offense_absent,
         "absent_days": absent_days,
+        "absent_dates": absent_dates,
         "offense_tardy": offense_tardy,
         "tardy_minutes": tardy_minutes,
         "offense_cutting": offense_cutting,
@@ -413,12 +525,12 @@ def submit_slip():
         "teacher_targets": teacher_targets,
         "teacher_approvals": teacher_approvals,
         "homeroom_adviser": homeroom_adviser,
-        "reason": request.form["reason"].strip(),
-        "guardian_name": request.form["guardian_name"].strip(),
-        "guardian_contact": request.form["guardian_contact"].strip(),
+        "attachment_name": safe_filename,
+        "attachment_file": stored_filename,
         "status": "Sent to Nurse Inbox",
         "current_inbox": "",
-        "assigned_email": ""
+        "assigned_email": "",
+        "hidden_from_student": False
     }
 
     admission_slips.append(slip)
@@ -457,16 +569,37 @@ def update_slip(slip_id):
         flash("This slip is not assigned to your teacher account.")
         return redirect(url_for("dashboard", role=role, email=email))
 
+    validation_error = validate_slip_action(slip, role, email, action)
+    if validation_error:
+        flash(validation_error)
+        return redirect(url_for("dashboard", role=role, email=email))
+
     if action == "approve":
         approve_slip(slip, email)
         flash("Slip approved and forwarded successfully.")
     elif action == "reject":
         reject_slip(slip, role, email)
         flash("Slip rejected successfully.")
-    else:
-        flash("Invalid action.")
 
     return redirect(url_for("dashboard", role=role, email=email))
+
+
+@app.route("/hide-slip/<int:slip_id>", methods=["POST"])
+def hide_slip(slip_id):
+    email = request.form["email"]
+    slip = get_slip_by_id(slip_id)
+
+    if slip is None or slip["student_email"] != email:
+        flash("Unable to hide that slip.")
+        return redirect(url_for("dashboard", role="student", email=email))
+
+    if slip["status"] == "Sent to Nurse Inbox":
+        flash("You can only remove a slip after it has been accepted or rejected by staff.")
+        return redirect(url_for("dashboard", role="student", email=email))
+
+    slip["hidden_from_student"] = True
+    flash("Slip removed from your submitted list.")
+    return redirect(url_for("dashboard", role="student", email=email))
 
 # ---------------- DASHBOARD ----------------
 @app.route("/dashboard/<role>")
@@ -476,7 +609,10 @@ def dashboard(role):
     display_name = account["display_name"] if account and "display_name" in account else email
 
     if role == "student" and email:
-        visible_slips = [slip for slip in admission_slips if slip["student_email"] == email]
+        visible_slips = [
+            slip for slip in admission_slips
+            if slip["student_email"] == email and not slip.get("hidden_from_student", False)
+        ]
         inbox_items = []
     else:
         visible_slips = []

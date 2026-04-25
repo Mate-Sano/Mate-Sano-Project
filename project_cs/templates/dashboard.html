@@ -244,6 +244,194 @@
             gap: 12px;
         }
 
+        .dynamic-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .date-picker-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .date-field-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+            margin-bottom: 10px;
+        }
+
+        .date-field-stack .add-btn {
+            align-self: center;
+        }
+
+        .selected-dates {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .date-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: var(--blue-1);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .date-chip button {
+            border: none;
+            background: transparent;
+            color: var(--blue-1);
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .add-btn {
+            border: none;
+            border-radius: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .secondary-label {
+            display: block;
+            margin: 4px 0 12px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        .upload-box {
+            border: 2px dashed rgba(37, 99, 235, 0.28);
+            border-radius: 18px;
+            padding: 24px;
+            background: linear-gradient(135deg, #f8fbff 0%, #eef6ff 100%);
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .upload-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .upload-box p {
+            margin: 0 0 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .upload-box input[type="file"] {
+            display: none;
+        }
+
+        .upload-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .upload-trigger {
+            display: inline-block;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .upload-filename {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .upload-preview {
+            display: none;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(219, 234, 254, 0.9);
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            color: var(--blue-1);
+            text-align: left;
+        }
+
+        .upload-preview strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .upload-preview span {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .upload-preview-media {
+            display: none;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            background: white;
+        }
+
+        .upload-preview-image {
+            display: none;
+            width: 100%;
+            max-height: 280px;
+            object-fit: contain;
+            background: white;
+        }
+
+        .upload-preview-pdf {
+            display: none;
+            width: 100%;
+            height: 320px;
+            border: none;
+            background: white;
+        }
+
+        .upload-preview-note {
+            display: none;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(248, 250, 252, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
         label {
             display: block;
             font-weight: bold;
@@ -311,6 +499,25 @@
                 linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.92) 100%);
             border: 1px solid rgba(203, 213, 225, 0.9);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            position: relative;
+        }
+
+        .hide-slip-form {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+        }
+
+        .hide-slip-btn {
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.08);
+            color: #475569;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         .slip-top {
@@ -375,6 +582,38 @@
 
         .detail.wide {
             grid-column: 1 / -1;
+        }
+
+        .saved-attachment {
+            margin-top: 8px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(37, 99, 235, 0.14);
+            background: white;
+        }
+
+        .saved-attachment img {
+            display: block;
+            width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            background: white;
+        }
+
+        .saved-attachment iframe {
+            display: block;
+            width: 100%;
+            height: 340px;
+            border: none;
+            background: white;
+        }
+
+        .attachment-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--blue-1);
+            font-weight: bold;
+            text-decoration: none;
         }
 
         .approval-list {
@@ -485,7 +724,7 @@
     </div>
 
     <div class="hero-side">
-        <h2>ASGO Control Panel</h2>
+        <h2>ExcuseTrack Control Panel</h2>
         <p>
             {% if email %}
                 You are signed in as <strong>{{ display_name }}</strong>{% if display_name != email %} using <strong>{{ email }}</strong>{% endif %}.
@@ -515,7 +754,7 @@
                 <h2>Submit Admission Slip</h2>
                 <p class="card-copy">Complete the form below so your slip can enter the approval flow starting with the nurse inbox.</p>
 
-                <form action="/submit-slip" method="POST">
+                <form id="slip-form" action="/submit-slip" method="POST" enctype="multipart/form-data" onsubmit="return validateSlipForm(event)">
                     <div class="grid">
                         <div>
                             <label for="student_name">Student Name</label>
@@ -532,9 +771,11 @@
                             <label for="grade_section">Grade & Section</label>
                             <input id="grade_section" type="text" name="grade_section" placeholder="Grade 9 - Euler" required>
                         </div>
-                        <div>
-                            <label for="date_of_absence">Date of Absence</label>
+                        <div class="date-field-stack">
+                            <label for="date_of_absence">Date of Absence/s</label>
                             <input id="date_of_absence" type="date" name="date_of_absence" required>
+                            <button class="add-btn" type="button" id="add-absent-date-btn">Add Date</button>
+                            <div id="absent-dates-list" class="selected-dates"></div>
                         </div>
                     </div>
 
@@ -568,24 +809,32 @@
 
                     <div class="offense-card">
                         <label>Affected Subject/s</label>
-                        <div class="subjects-grid">
-                            <input type="text" name="subject_1" placeholder="Subject 1" required>
-                            <input type="text" name="subject_2" placeholder="Subject 2">
-                            <input type="text" name="subject_3" placeholder="Subject 3">
+                        <span class="secondary-label">Add as many subjects as needed.</span>
+                        <div id="subjects-list" class="dynamic-list">
+                            <input type="text" name="subjects[]" placeholder="Subject 1" required>
                         </div>
+                        <button class="add-btn" type="button" id="add-subject-btn">Add Another Subject</button>
                     </div>
 
-                    <label for="reason">Reason for Absence</label>
-                    <textarea id="reason" name="reason" placeholder="Explain the reason for the absence..." required></textarea>
-
-                    <div class="grid">
-                        <div>
-                            <label for="guardian_name">Parent / Guardian Name</label>
-                            <input id="guardian_name" type="text" name="guardian_name" placeholder="Maria Dela Cruz" required>
-                        </div>
-                        <div>
-                            <label for="guardian_contact">Parent / Guardian Contact</label>
-                            <input id="guardian_contact" type="text" name="guardian_contact" placeholder="09XXXXXXXXX" required>
+                    <div class="offense-card">
+                        <label for="attachment">Excuse Letter / Medical Certificate</label>
+                        <div class="upload-box">
+                            <strong>Drop or choose your file here</strong>
+                            <p>Upload your excuse letter or medical certificate as PDF, image, or Word document.</p>
+                            <div class="upload-actions">
+                                <label class="upload-trigger" for="attachment">Choose Attachment</label>
+                                <span id="attachment-name" class="upload-filename">No file selected</span>
+                                <div id="attachment-preview" class="upload-preview">
+                                    <strong>Selected File</strong>
+                                    <span id="attachment-preview-name"></span>
+                                </div>
+                                <div id="attachment-preview-media" class="upload-preview-media">
+                                    <img id="attachment-preview-image" class="upload-preview-image" alt="Selected attachment preview">
+                                    <iframe id="attachment-preview-pdf" class="upload-preview-pdf" title="Selected PDF preview"></iframe>
+                                </div>
+                                <div id="attachment-preview-note" class="upload-preview-note"></div>
+                            </div>
+                            <input id="attachment" type="file" name="attachment" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" required>
                         </div>
                     </div>
 
@@ -626,6 +875,12 @@
             <div class="slip-list">
                 {% for slip in slips %}
                     <article class="slip">
+                        {% if slip.status != "Sent to Nurse Inbox" %}
+                            <form class="hide-slip-form" action="/hide-slip/{{ slip.id }}" method="POST">
+                                <input type="hidden" name="email" value="{{ email }}">
+                                <button class="hide-slip-btn" type="submit" title="Remove from your list">x</button>
+                            </form>
+                        {% endif %}
                         <div class="slip-top">
                             <div>
                                 <h3>{{ slip.student_name }}</h3>
@@ -654,6 +909,12 @@
                                 {% if slip.offense_tardy and slip.offense_cutting %} | {% endif %}
                                 {% if slip.offense_cutting %}Cutting: {{ slip.cutting_classes }} class/es{% endif %}
                             </div>
+                            {% if slip.offense_absent and slip.absent_dates %}
+                                <div class="detail wide">
+                                    <strong>Absent Date/s</strong>
+                                    {{ slip.absent_dates|join(", ") }}
+                                </div>
+                            {% endif %}
                             <div class="detail wide">
                                 <strong>Subject/s</strong>
                                 {{ slip.subjects|join(", ") }}
@@ -692,16 +953,19 @@
                                 {% endif %}
                             </div>
                             <div class="detail wide">
-                                <strong>Reason</strong>
-                                {{ slip.reason }}
-                            </div>
-                            <div class="detail">
-                                <strong>Guardian</strong>
-                                {{ slip.guardian_name }}
-                            </div>
-                            <div class="detail">
-                                <strong>Contact</strong>
-                                {{ slip.guardian_contact }}
+                                <strong>Attachment</strong>
+                                {{ slip.attachment_name }}
+                                {% set lower_name = slip.attachment_name.lower() %}
+                                {% if lower_name.endswith('.png') or lower_name.endswith('.jpg') or lower_name.endswith('.jpeg') %}
+                                    <div class="saved-attachment">
+                                        <img src="{{ url_for('uploaded_file', filename=slip.attachment_file) }}" alt="Uploaded attachment">
+                                    </div>
+                                {% elif lower_name.endswith('.pdf') %}
+                                    <div class="saved-attachment">
+                                        <iframe src="{{ url_for('uploaded_file', filename=slip.attachment_file) }}"></iframe>
+                                    </div>
+                                {% endif %}
+                                <a class="attachment-link" href="{{ url_for('uploaded_file', filename=slip.attachment_file) }}" target="_blank">Open Attachment</a>
                             </div>
                             <div class="detail wide">
                                 <strong>Current Inbox</strong>
@@ -743,6 +1007,12 @@
                                 {% if slip.offense_tardy and slip.offense_cutting %} | {% endif %}
                                 {% if slip.offense_cutting %}Cutting: {{ slip.cutting_classes }} class/es{% endif %}
                             </div>
+                            {% if slip.offense_absent and slip.absent_dates %}
+                                <div class="detail wide">
+                                    <strong>Absent Date/s</strong>
+                                    {{ slip.absent_dates|join(", ") }}
+                                </div>
+                            {% endif %}
                             <div class="detail wide">
                                 <strong>Subject/s</strong>
                                 {{ slip.subjects|join(", ") }}
@@ -781,16 +1051,19 @@
                                 {% endif %}
                             </div>
                             <div class="detail wide">
-                                <strong>Reason</strong>
-                                {{ slip.reason }}
-                            </div>
-                            <div class="detail">
-                                <strong>Guardian</strong>
-                                {{ slip.guardian_name }}
-                            </div>
-                            <div class="detail">
-                                <strong>Contact</strong>
-                                {{ slip.guardian_contact }}
+                                <strong>Attachment</strong>
+                                {{ slip.attachment_name }}
+                                {% set lower_name = slip.attachment_name.lower() %}
+                                {% if lower_name.endswith('.png') or lower_name.endswith('.jpg') or lower_name.endswith('.jpeg') %}
+                                    <div class="saved-attachment">
+                                        <img src="{{ url_for('uploaded_file', filename=slip.attachment_file) }}" alt="Uploaded attachment">
+                                    </div>
+                                {% elif lower_name.endswith('.pdf') %}
+                                    <div class="saved-attachment">
+                                        <iframe src="{{ url_for('uploaded_file', filename=slip.attachment_file) }}"></iframe>
+                                    </div>
+                                {% endif %}
+                                <a class="attachment-link" href="{{ url_for('uploaded_file', filename=slip.attachment_file) }}" target="_blank">Open Attachment</a>
                             </div>
                             <div class="detail wide">
                                 <strong>Assigned To</strong>
@@ -798,7 +1071,7 @@
                             </div>
                         </div>
 
-                        <form class="action-form" action="/update-slip/{{ slip.id }}" method="POST">
+                        <form class="action-form approval-form" action="/update-slip/{{ slip.id }}" method="POST" onsubmit="return confirmSlipAction(event)">
                             <input type="hidden" name="role" value="{{ role }}">
                             <input type="hidden" name="email" value="{{ email }}">
                             <button class="approve-btn" type="submit" name="action" value="approve">
@@ -853,6 +1126,298 @@
     bindOffenseToggle("offense_absent", "absent_days");
     bindOffenseToggle("offense_tardy", "tardy_minutes");
     bindOffenseToggle("offense_cutting", "cutting_classes");
+
+    const subjectsList = document.getElementById("subjects-list");
+    const addSubjectButton = document.getElementById("add-subject-btn");
+    const absentCheckbox = document.getElementById("offense_absent");
+    const absentDaysInput = document.getElementById("absent_days");
+    const absentDatesCard = document.getElementById("absent-dates-card");
+    const absentDatesList = document.getElementById("absent-dates-list");
+    const mainDateInput = document.getElementById("date_of_absence");
+    const addAbsentDateButton = document.getElementById("add-absent-date-btn");
+    const attachmentInput = document.getElementById("attachment");
+    const attachmentName = document.getElementById("attachment-name");
+    const attachmentPreview = document.getElementById("attachment-preview");
+    const attachmentPreviewName = document.getElementById("attachment-preview-name");
+    const attachmentPreviewMedia = document.getElementById("attachment-preview-media");
+    const attachmentPreviewImage = document.getElementById("attachment-preview-image");
+    const attachmentPreviewPdf = document.getElementById("attachment-preview-pdf");
+    const attachmentPreviewNote = document.getElementById("attachment-preview-note");
+    const slipForm = document.getElementById("slip-form");
+    let selectedAbsentDates = [];
+
+    if (addSubjectButton && subjectsList) {
+        addSubjectButton.addEventListener("click", () => {
+            const nextIndex = subjectsList.querySelectorAll('input[name="subjects[]"]').length + 1;
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = "subjects[]";
+            input.placeholder = `Subject ${nextIndex}`;
+            subjectsList.appendChild(input);
+        });
+    }
+
+    function syncAbsentDates() {
+        if (!absentCheckbox || !absentDaysInput || !absentDatesCard || !absentDatesList) {
+            return;
+        }
+
+        const enabled = absentCheckbox.checked;
+        const count = parseInt(absentDaysInput.value || "0", 10);
+
+        absentDatesCard.style.display = "none";
+        if (addAbsentDateButton) {
+            addAbsentDateButton.disabled = !enabled;
+        }
+
+        if (!enabled || !Number.isFinite(count) || count < 1) {
+            selectedAbsentDates = [];
+            renderAbsentDates();
+            return;
+        }
+
+        if (selectedAbsentDates.length > count) {
+            selectedAbsentDates = selectedAbsentDates.slice(0, count);
+        }
+
+        renderAbsentDates();
+    }
+
+    function renderAbsentDates() {
+        if (!absentDatesList) {
+            return;
+        }
+
+        absentDatesList.innerHTML = "";
+        absentDatesList.style.display = selectedAbsentDates.length ? "flex" : "none";
+
+        selectedAbsentDates.forEach((dateValue, index) => {
+            const chip = document.createElement("div");
+            chip.className = "date-chip";
+            chip.appendChild(document.createTextNode(dateValue));
+
+            const removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.textContent = "x";
+            removeButton.addEventListener("click", () => {
+                selectedAbsentDates.splice(index, 1);
+                renderAbsentDates();
+            });
+            chip.appendChild(removeButton);
+
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "absent_dates[]";
+            hiddenInput.value = dateValue;
+
+            absentDatesList.appendChild(chip);
+            absentDatesList.appendChild(hiddenInput);
+        });
+    }
+
+    function syncSingleDateIndicator() {
+        if (!mainDateInput || !absentDatesList) {
+            return;
+        }
+
+        if (absentCheckbox && absentCheckbox.checked) {
+            return;
+        }
+
+        absentDatesList.innerHTML = "";
+        absentDatesList.style.display = mainDateInput.value ? "flex" : "none";
+
+        if (!mainDateInput.value) {
+            return;
+        }
+
+        const chip = document.createElement("div");
+        chip.className = "date-chip";
+        chip.textContent = mainDateInput.value;
+        absentDatesList.appendChild(chip);
+    }
+
+    if (absentCheckbox && absentDaysInput) {
+        absentCheckbox.addEventListener("change", () => {
+            syncAbsentDates();
+            syncSingleDateIndicator();
+        });
+        absentDaysInput.addEventListener("input", syncAbsentDates);
+        syncAbsentDates();
+    }
+
+    if (addAbsentDateButton && mainDateInput && absentDaysInput) {
+        addAbsentDateButton.addEventListener("click", () => {
+            if (!absentCheckbox.checked) {
+                return;
+            }
+
+            const count = parseInt(absentDaysInput.value || "0", 10);
+            const pickedDate = mainDateInput.value;
+
+            if (!pickedDate || !Number.isFinite(count) || count < 1) {
+                return;
+            }
+
+            if (selectedAbsentDates.includes(pickedDate)) {
+                return;
+            }
+
+            if (selectedAbsentDates.length >= count) {
+                return;
+            }
+
+            selectedAbsentDates.push(pickedDate);
+            renderAbsentDates();
+        });
+    }
+
+    if (mainDateInput) {
+        mainDateInput.addEventListener("input", syncSingleDateIndicator);
+        syncSingleDateIndicator();
+    }
+
+    if (attachmentInput && attachmentName) {
+        attachmentInput.addEventListener("change", () => {
+            const file = attachmentInput.files && attachmentInput.files[0];
+            attachmentName.textContent = file ? file.name : "No file selected";
+
+            if (attachmentPreview && attachmentPreviewName) {
+                if (file) {
+                    attachmentPreview.style.display = "block";
+                    attachmentPreviewName.textContent = file.name;
+                } else {
+                    attachmentPreview.style.display = "none";
+                    attachmentPreviewName.textContent = "";
+                }
+            }
+
+            if (attachmentPreviewMedia && attachmentPreviewImage && attachmentPreviewPdf && attachmentPreviewNote) {
+                attachmentPreviewMedia.style.display = "none";
+                attachmentPreviewImage.style.display = "none";
+                attachmentPreviewImage.src = "";
+                attachmentPreviewPdf.style.display = "none";
+                attachmentPreviewPdf.src = "";
+                attachmentPreviewNote.style.display = "none";
+                attachmentPreviewNote.textContent = "";
+
+                if (!file) {
+                    return;
+                }
+
+                if (file.type.startsWith("image/")) {
+                    const imageUrl = URL.createObjectURL(file);
+                    attachmentPreviewMedia.style.display = "block";
+                    attachmentPreviewImage.style.display = "block";
+                    attachmentPreviewImage.src = imageUrl;
+                    return;
+                }
+
+                if (file.type === "application/pdf") {
+                    const pdfUrl = URL.createObjectURL(file);
+                    attachmentPreviewMedia.style.display = "block";
+                    attachmentPreviewPdf.style.display = "block";
+                    attachmentPreviewPdf.src = pdfUrl;
+                    return;
+                }
+
+                attachmentPreviewNote.style.display = "block";
+                attachmentPreviewNote.textContent = "This file type cannot be previewed in the form, but it is selected and ready to upload.";
+            }
+        });
+    }
+
+    window.validateSlipForm = function(event) {
+        const studentName = document.getElementById("student_name");
+        const studentEmail = document.getElementById("student_email");
+        const gradeSection = document.getElementById("grade_section");
+        const tardyCheckbox = document.getElementById("offense_tardy");
+        const cuttingCheckbox = document.getElementById("offense_cutting");
+        const tardyInput = document.getElementById("tardy_minutes");
+        const cuttingInput = document.getElementById("cutting_classes");
+        const subjectInputs = Array.from(document.querySelectorAll('input[name="subjects[]"]'));
+        const subjects = subjectInputs.map((input) => input.value.trim()).filter(Boolean);
+
+        const fail = (message) => {
+            if (event) {
+                event.preventDefault();
+            }
+            alert(message);
+            return false;
+        };
+
+        if (!studentName || !studentName.value.trim()) {
+            return fail("Please enter the student name.");
+        }
+
+        if (!studentEmail || !studentEmail.value.trim()) {
+            return fail("Please enter the student email.");
+        }
+
+        if (!gradeSection || !gradeSection.value.trim()) {
+            return fail("Please enter the grade and section.");
+        }
+
+        if (!mainDateInput || !mainDateInput.value) {
+            return fail("Please choose the date of absence.");
+        }
+
+        if (!absentCheckbox.checked && !(tardyCheckbox && tardyCheckbox.checked) && !(cuttingCheckbox && cuttingCheckbox.checked)) {
+            return fail("Please select at least one offense.");
+        }
+
+        if (absentCheckbox.checked) {
+            const absentCount = parseInt(absentDaysInput.value || "0", 10);
+            if (!Number.isFinite(absentCount) || absentCount < 1) {
+                return fail("Please enter a valid number of days absent.");
+            }
+
+            if (selectedAbsentDates.length !== absentCount) {
+                return fail("The number of added absent dates must match the days absent.");
+            }
+        }
+
+        if (tardyCheckbox && tardyCheckbox.checked) {
+            const tardyCount = parseInt(tardyInput.value || "0", 10);
+            if (!Number.isFinite(tardyCount) || tardyCount < 1) {
+                return fail("Please enter valid tardy minutes.");
+            }
+        }
+
+        if (cuttingCheckbox && cuttingCheckbox.checked) {
+            const cuttingCount = parseInt(cuttingInput.value || "0", 10);
+            if (!Number.isFinite(cuttingCount) || cuttingCount < 1) {
+                return fail("Please enter a valid number of classes cut.");
+            }
+        }
+
+        if (!subjects.length) {
+            return fail("Please enter at least one affected subject.");
+        }
+
+        if (!attachmentInput || !attachmentInput.files || !attachmentInput.files.length) {
+            return fail("Please upload your excuse letter or medical certificate.");
+        }
+
+        return true;
+    };
+
+    window.confirmSlipAction = function(event) {
+        const submitter = event ? event.submitter : null;
+        const action = submitter ? submitter.value : "";
+        const message = action === "approve"
+            ? "Are you sure you want to approve this admission slip?"
+            : "Are you sure you want to reject this admission slip?";
+
+        if (!confirm(message)) {
+            if (event) {
+                event.preventDefault();
+            }
+            return false;
+        }
+
+        return true;
+    };
 </script>
 </body>
 </html>
